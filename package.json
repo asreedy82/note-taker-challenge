@@ -1,0 +1,25 @@
+{
+  "name": "note-taker",
+  "version": "1.0.0",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.18.2",
+    "inquirer": "^8.2.4",
+    "uuid": "^9.0.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/asreedy82/note-taker-challenge.git"
+  },
+  "keywords": [],
+  "bugs": {
+    "url": "https://github.com/asreedy82/note-taker-challenge/issues"
+  },
+  "homepage": "https://github.com/asreedy82/note-taker-challenge#readme",
+  "description": ""
+}
