@@ -1,31 +1,3 @@
 [
-  {
-    "title": "Test Title",
-    "text": "Test text"
-  },
-  {
-    "title": "test note",
-    "text": "asdfsadf",
-    "noteId": "1ef9507d-1932-4ff3-8517-8be278f9ccd6"
-  },
-  {
-    "title": "Another test note",
-    "text": "asdfsadf",
-    "noteId": "c42d0b2b-5514-46fd-9ac6-a1c28f7864da"
-  },
-  {
-    "title": "testing again",
-    "text": "asldfasdf",
-    "noteId": "14f84e78-9037-45b0-ae24-67ec7ea66af5"
-  },
-  {
-    "title": "asdfsaa",
-    "text": "sdfsdfsd",
-    "noteId": "12ac5296-7512-4131-b753-a3220a9139e9"
-  },
-  {
-    "title": "making a note",
-    "text": "asdfsadf",
-    "noteId": "4a2899bc-88de-4d46-9349-3e670180320d"
-  }
+  
 ]

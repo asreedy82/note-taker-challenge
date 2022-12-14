@@ -4,6 +4,7 @@ const PORT = 3001;
 const notes = require('./db/db.json');
 const { v4: uuidv4 } = require('uuid');
 const fs = require('fs');
+const { up } = require('inquirer/lib/utils/readline');
 
 const app = express();
 
@@ -21,22 +22,24 @@ app.get('/notes', (req, res) => {
 });
 
 
+let parsedNotes = notes;
 
 // GET notes from db
 app.get('/api/notes', (req, res) => {
     //res.status(200).json(notes);
-    res.json(notes);
+    res.json(parsedNotes);
 });
 
 //post request to add a note
 app.post('/api/notes', (req, res) => {
     //log request
     console.log(`${req.method} was received to add a note`);
-    console.log(req.body);
+    console.log(`request body: ${req.body}`);
     const { title, text } = req.body;
-    console.log(title);
+    console.log(`New note title: ${title}`);
 
     if (title && text) {
+
         const newNote = {
             title,
             text,
@@ -48,16 +51,19 @@ app.post('/api/notes', (req, res) => {
             if (error) {
                 return res.status(500).send("There has been an error.");
             } else {
-                const parsedNotes = JSON.parse(data);
+                parsedNotes = JSON.parse(data);
                 //add new note
                 parsedNotes.push(newNote);
+                let updatedNotes = JSON.stringify(parsedNotes, null, 2);
 
                 //write new note to db.json
-                fs.writeFile(`./db/db.json`, JSON.stringify(parsedNotes, null, 2), (err) => {
+                //fs.writeFile(`./db/db.json`, JSON.stringify(parsedNotes, null, 2), (err) => {
+                fs.writeFile(`./db/db.json`, updatedNotes, (err) => {
                     if (error) {
                         return res.status(500).send("There has been an error.");
                     } else {
-                        console.info('Successfully added note!')
+                        console.info('Successfully added note!');
+                        res.json(parsedNotes);
                     }
                 }
                 );
@@ -67,9 +73,8 @@ app.post('/api/notes', (req, res) => {
             status: 'success',
             body: newNote,
         };
-        console.log(response);
+        console.log(response);       
         //res.status(201).json(response);
-        res.json(notes);
     } else {
         res.status(500).json('Error in creating note');
     }
