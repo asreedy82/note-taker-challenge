@@ -24,7 +24,8 @@ app.get('/notes', (req, res) => {
 
 // GET notes from db
 app.get('/api/notes', (req, res) => {
-    res.status(200).json(notes);
+    //res.status(200).json(notes);
+    res.json(notes);
 });
 
 //post request to add a note
@@ -67,7 +68,8 @@ app.post('/api/notes', (req, res) => {
             body: newNote,
         };
         console.log(response);
-        res.status(201).json(response);
+        //res.status(201).json(response);
+        res.json(notes);
     } else {
         res.status(500).json('Error in creating note');
     }
