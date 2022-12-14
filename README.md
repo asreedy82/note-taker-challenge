@@ -8,7 +8,8 @@ This application allows a user to create and delete notes, and it also saves the
 
 ## Installation
 
-In order to use this application, Express needs to be installed. To install Express, first run `npm init -y` then run `npm i express`. I also use an npm package `uniqid`. To install that, run `npm i uniqid`. Then run `node server.js` to have the app listen to port 3001. Then open the webpage here: [Link to page](http://localhost:3001/)
+In order to use this application, navigate to the page linked below. Click on the `Get Started` button. From there you can see previous notes taken. You can add a note title and text, then hit the save button at the top right to save it. To delete a note, click on the trash icon next to it.
+[Link to page](https://serene-eyrie-98195.herokuapp.com/)
 
 ## Usage
 
