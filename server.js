@@ -10,9 +10,14 @@ const app = express();
 //middleware
 app.use(express.json());
 
+app.use(express.urlencoded({ extended: true }));
+app.use(express.static('public'));
+
 // GET Route for notes page
 app.get('/notes', (req, res) => {
     res.sendFile(path.join(__dirname, '/public/notes.html'))
+
+    console.info(`${req.method} request received to get notes`);
 });
 
 // GET Route for index.html
@@ -26,10 +31,12 @@ app.get('/api/notes', (req, res) => {
 });
 
 //post request to add a note
-app.post('api/notes', (req, res) => {
+app.post('/api/notes', (req, res) => {
     //log request
     console.log(`${req.method} was received to add a note`);
+    console.log(req.body);
     const { title, text } = req.body;
+    console.log(title);
 
     if (title && text) {
         const newNote = {
@@ -44,29 +51,69 @@ app.post('api/notes', (req, res) => {
                 return res.status(500).send("There has been an error.");
             } else {
                 const parsedNotes = JSON.parse(data);
+                //add new note
                 parsedNotes.push(newNote);
-            }
-        })
 
-        //write new note to db.json
-        fs.writeFile(`./db/db.json`, JSON.stringify(parsedNotes, null, 2), (err) => {
-            if (error) {
-                return res.status(500).send("There has been an error.");
-            } else {
-                const response = {
-                    status: 'success',
-                    body: newNote,
+                //write new note to db.json
+                fs.writeFile(`./db/db.json`, JSON.stringify(parsedNotes, null, 2), (err) => {
+                    if (error) {
+                        return res.status(500).send("There has been an error.");
+                    } else {
+                        console.info('Successfully added note!')
+                    }
                 }
-            }
-        })
+                );
+            };
+        });
+        const response = {
+            status: 'success',
+            body: newNote,
+        };
         console.log(response);
-    res.status(201).json(response);
+        res.status(201).json(response);
     } else {
         res.status(500).json('Error in creating note');
     }
 }
-)
+);
 
+/*
+//delete a note
+app.delete('/api/notes/:id', (req, res) => {
+    if (req.params.id) {
+        //log request
+        console.log(`${req.method} was received to delete a note`);
+        const id = req.params.id;
+        //reads what's in db.json and write new file without deleted note    
+        fs.readFile('./db/db.json', 'utf-8', (error, data) => {
+            if (error) {
+                return res.status(500).send("There has been an error.");
+            } else {
+                const parsedNotes = JSON.parse(data);
+                //find note
+                for (let i = 0; i < notes.length; i++) {
+                    const deleteNote = notes[i];
+                    if (deleteNote.id === id) {
+                        parsedNotes.splice(i, 1);
+                        console.log(`removing ${deleteNote}`);
+                        return;
+                    }
+                }
+
+                //write new note to db.json
+                fs.writeFile(`./db/db.json`, JSON.stringify(parsedNotes, null, 2), (err) => {
+                    if (error) {
+                        return res.status(500).send("There has been an error.");
+                    } else {
+                        console.info('Successfully deleted note!')
+                    }
+                }
+                );
+            };
+        });
+    }
+})
+*/
 app.listen(PORT, () =>
     console.log(`App listening at http://localhost:${PORT} 🚀`)
 );

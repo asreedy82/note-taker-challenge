@@ -1,6 +1,11 @@
 [
-    {
-        "title":"Test Title",
-        "text":"Test text"
-    }
+  {
+    "title": "Test Title",
+    "text": "Test text"
+  },
+  {
+    "title": "Taking notes",
+    "text": "asdfsdfoisdf",
+    "noteId": "df35351a-adb2-41b7-bc3c-ea5d53cd3326"
+  }
 ]
