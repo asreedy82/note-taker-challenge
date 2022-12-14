@@ -20,14 +20,11 @@ app.get('/notes', (req, res) => {
     console.info(`${req.method} request received to get notes`);
 });
 
-// GET Route for index.html
-app.get('/', (req, res) => {
-    res.sendFile(path.join(__dirname, '/public/index.html'))
-});
+
 
 // GET notes from db
 app.get('/api/notes', (req, res) => {
-    return res.status(200).json(notes);
+    res.status(200).json(notes);
 });
 
 //post request to add a note
@@ -114,6 +111,12 @@ app.delete('/api/notes/:id', (req, res) => {
     }
 })
 */
+
+// GET Route for index.html
+app.get('*', (req, res) => {
+    res.sendFile(path.join(__dirname, '/public/index.html'))
+});
+
 app.listen(PORT, () =>
     console.log(`App listening at http://localhost:${PORT} 🚀`)
 );
