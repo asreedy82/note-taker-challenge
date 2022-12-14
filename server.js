@@ -3,8 +3,8 @@ const path = require('path');
 const PORT = 3001;
 const notes = require('./db/db.json');
 const { v4: uuidv4 } = require('uuid');
+const uniqid = require('uniqid'); 
 const fs = require('fs');
-const { up } = require('inquirer/lib/utils/readline');
 
 const app = express();
 
@@ -34,7 +34,6 @@ app.get('/api/notes', (req, res) => {
 app.post('/api/notes', (req, res) => {
     //log request
     console.log(`${req.method} was received to add a note`);
-    console.log(`request body: ${req.body}`);
     const { title, text } = req.body;
     console.log(`New note title: ${title}`);
 
@@ -43,7 +42,7 @@ app.post('/api/notes', (req, res) => {
         const newNote = {
             title,
             text,
-            noteId: uuidv4(),
+            id: uniqid(),
         };
 
         //reads what's in db.json and adds new note to file    
@@ -57,7 +56,6 @@ app.post('/api/notes', (req, res) => {
                 let updatedNotes = JSON.stringify(parsedNotes, null, 2);
 
                 //write new note to db.json
-                //fs.writeFile(`./db/db.json`, JSON.stringify(parsedNotes, null, 2), (err) => {
                 fs.writeFile(`./db/db.json`, updatedNotes, (err) => {
                     if (error) {
                         return res.status(500).send("There has been an error.");
@@ -81,43 +79,46 @@ app.post('/api/notes', (req, res) => {
 }
 );
 
-/*
+
 //delete a note
 app.delete('/api/notes/:id', (req, res) => {
-    if (req.params.id) {
         //log request
         console.log(`${req.method} was received to delete a note`);
         const id = req.params.id;
+        console.log(`id to be deleted: ${req.params.id}`);
+    if (req.params.id) {
         //reads what's in db.json and write new file without deleted note    
         fs.readFile('./db/db.json', 'utf-8', (error, data) => {
             if (error) {
                 return res.status(500).send("There has been an error.");
             } else {
-                const parsedNotes = JSON.parse(data);
                 //find note
-                for (let i = 0; i < notes.length; i++) {
-                    const deleteNote = notes[i];
+                for (let i = 0; i < parsedNotes.length; i++) {
+                    const deleteNote = parsedNotes[i];
                     if (deleteNote.id === id) {
                         parsedNotes.splice(i, 1);
-                        console.log(`removing ${deleteNote}`);
-                        return;
                     }
                 }
+                let updatedNotes = JSON.stringify(parsedNotes, null, 2);
+                console.log(`after delete: ${updatedNotes}`);
 
                 //write new note to db.json
-                fs.writeFile(`./db/db.json`, JSON.stringify(parsedNotes, null, 2), (err) => {
+                fs.writeFile(`./db/db.json`, updatedNotes, (err) => {
                     if (error) {
                         return res.status(500).send("There has been an error.");
                     } else {
                         console.info('Successfully deleted note!')
+                        res.json(parsedNotes);
                     }
                 }
                 );
             };
         });
+    }else {
+        res.status(500).json('Error in deleting note');
     }
-})
-*/
+});
+
 
 // GET Route for index.html
 app.get('*', (req, res) => {
